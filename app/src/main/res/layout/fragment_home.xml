@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F8F7F7"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_marginTop="35dp"
+            android:layout_width="368dp"
+            android:layout_height="50dp"
+            android:weightSum="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="#FFC107"
+                android:fontFamily="sans-serif"
+                android:textFontWeight="722"
+                android:layout_weight="0.2"
+                android:text="Device State"
+                android:textSize="55px" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:id="@+id/bluetoothState"
+                android:layout_weight="0.8"
+                android:src="@drawable/bluetooth_off"
+                tools:layout_editor_absoluteX="221dp"
+                tools:layout_editor_absoluteY="192dp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="35dp"
+            android:layout_width="368dp"
+            android:layout_height="50dp"
+            android:weightSum="1"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="0.5"
+                android:text="PH"
+                android:textColor="#2196F3"
+                android:textFontWeight="800"
+                android:textSize="55px" />
+
+            <TextView
+                android:id="@+id/displayPH"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="0.5"
+                android:text="None"
+                android:textColor="#2196F3"
+                android:textFontWeight="300"
+                android:textSize="55px" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="15dp"
+            android:layout_width="368dp"
+            android:layout_height="50dp"
+            android:weightSum="1"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="0.5"
+                android:text="ES"
+                android:textColor="#2196F3"
+                android:textFontWeight="800"
+                android:textSize="55px" />
+
+            <TextView
+                android:id="@+id/displayEs"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="0.5"
+                android:text="None"
+                android:textColor="#2196F3"
+                android:textFontWeight="300"
+                android:textSize="55px" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

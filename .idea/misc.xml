@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/AhmedDakrory/Desktop/AtlasMeasurements/app/src/main/res/drawable/ic_delete_white_24dp.xml" value="0.1" />
+        <entry key="..\:/Users/AhmedDakrory/Desktop/AtlasMeasurements/app/src/main/res/layout/activity_ble__scanner.xml" value="0.1" />
+        <entry key="..\:/Users/AhmedDakrory/Desktop/AtlasMeasurements/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/AhmedDakrory/Desktop/AtlasMeasurements/app/src/main/res/layout/activity_scan.xml" value="0.22" />
+        <entry key="..\:/Users/AhmedDakrory/Desktop/AtlasMeasurements/app/src/main/res/layout/adapter_device.xml" value="0.1" />
+        <entry key="..\:/Users/AhmedDakrory/Desktop/AtlasMeasurements/app/src/main/res/layout/adapter_service.xml" value="0.1" />
+        <entry key="..\:/Users/AhmedDakrory/Desktop/AtlasMeasurements/app/src/main/res/layout/button_pour_component.xml" value="0.1" />
+        <entry key="..\:/Users/AhmedDakrory/Desktop/AtlasMeasurements/app/src/main/res/layout/chat_main.xml" value="0.1" />
+        <entry key="..\:/Users/AhmedDakrory/Desktop/AtlasMeasurements/app/src/main/res/layout/device_list_header.xml" value="0.1" />
+        <entry key="..\:/Users/AhmedDakrory/Desktop/AtlasMeasurements/app/src/main/res/layout/device_list_item.xml" value="0.1" />
+        <entry key="..\:/Users/AhmedDakrory/Desktop/AtlasMeasurements/app/src/main/res/layout/fragment_terminal.xml" value="0.1" />
+        <entry key="..\:/Users/AhmedDakrory/Desktop/AtlasMeasurements/app/src/main/res/menu/menu_devices.xml" value="0.1" />
+        <entry key="..\:/Users/AhmedDakrory/Desktop/AtlasMeasurements/app/src/main/res/menu/menu_main.xml" value="0.1" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
