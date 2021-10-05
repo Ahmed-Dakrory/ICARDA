@@ -1,0 +1,76 @@
+<resources>
+
+    <string-array name="Address">
+        <item >Address</item>
+        <item >العنوان</item>
+    </string-array>
+
+
+    <string-array name="Languages">
+        <item >English</item>
+        <item >العربية</item>
+    </string-array>
+
+
+    <string-array name="PleaseOpenItAgain">
+        <item >Please restart the app to apply the changes</item>
+        <item >برجاء اعادة تشغيل البرنامج لتفعيل التغيير</item>
+    </string-array>
+
+
+    <string-array name="DeviceState">
+        <item >Device State</item>
+        <item >حالة الجهاز</item>
+    </string-array>
+
+
+    <string-array name="StartDate">
+        <item >Start Date</item>
+        <item >وقت البداية</item>
+    </string-array>
+
+
+    <string-array name="endDate">
+        <item >End Date</item>
+        <item >وقت النهاية</item>
+    </string-array>
+
+
+    <string-array name="Export">
+        <item >Export</item>
+        <item >تصدير</item>
+    </string-array>
+
+
+    <string-array name="Settings">
+        <item >Settings</item>
+        <item >اعدادات</item>
+    </string-array>
+
+    <string-array name="Home">
+        <item >Home</item>
+        <item >الرئيسية</item>
+    </string-array>
+
+    <string-array name="ManageReadings">
+        <item >Manage Readings</item>
+        <item >مشاهدة البيانات</item>
+    </string-array>
+
+    <string-array name="Exit">
+        <item >Exit</item>
+        <item >خروج</item>
+    </string-array>
+
+
+    <string-array name="Save">
+        <item >Save</item>
+        <item >حفظ</item>
+    </string-array>
+
+
+    <string-array name="languageSelect">
+        <item >Select App Language</item>
+        <item >برجاء اختيار لغة التطبيق</item>
+    </string-array>
+</resources>

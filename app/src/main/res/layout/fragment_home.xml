@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,6 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:id="@+id/DeviceStateMain"
                 android:textColor="#FFC107"
                 android:fontFamily="sans-serif"
                 android:textFontWeight="722"
@@ -42,7 +45,7 @@
         </LinearLayout>
         <LinearLayout
             android:layout_marginTop="35dp"
-            android:layout_width="368dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:weightSum="1"
             android:orientation="horizontal">
@@ -62,7 +65,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="0.5"
-                android:text="None"
+                android:text="------"
                 android:textColor="#2196F3"
                 android:textFontWeight="300"
                 android:textSize="55px" />
@@ -70,7 +73,7 @@
 
         <LinearLayout
             android:layout_marginTop="15dp"
-            android:layout_width="368dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:weightSum="1"
             android:orientation="horizontal">
@@ -90,13 +93,101 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:layout_weight="0.5"
-                android:text="None"
+                android:text="------"
                 android:textColor="#2196F3"
                 android:textFontWeight="300"
                 android:textSize="55px" />
         </LinearLayout>
 
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="35dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:weightSum="1"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="0.3"
+                android:text="Lat:"
+                android:id="@+id/latValue"
+                android:textColor="#2196F3"
+                android:textFontWeight="800"
+                android:textSize="55px" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/longitudeValue"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Long:"
+                android:layout_weight="0.3"
+                android:textColor="#2196F3"
+                android:textFontWeight="300"
+                android:textSize="55px" />
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.4"
+                android:id="@+id/getLocation"
+                android:src="@drawable/side_nav_bar"/>
+        </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_marginTop="35dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:weightSum="1"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="0.5"
+            android:text="Address:"
+            android:id="@+id/addressMain"
+            android:textColor="#2196F3"
+            android:textFontWeight="800"
+            android:textSize="55px" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="0.5"
+            android:id="@+id/address"
+            android:text="------"
+            android:textColor="#2196F3"
+            android:textFontWeight="800"
+            android:textSize="55px" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="15dp"
+            android:padding="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:orientation="vertical">
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chartph"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
+
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chartes"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</ScrollView>
+</androidx.appcompat.widget.LinearLayoutCompat>

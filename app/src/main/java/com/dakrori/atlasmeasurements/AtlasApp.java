@@ -1,10 +1,14 @@
 package com.dakrori.atlasmeasurements;
 
+import android.Manifest;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import com.dakrori.atlasmeasurements.Bluetooth.bluetoothHandle;
+import com.dakrori.atlasmeasurements.Helpers.DBHandler;
 import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothClassicService;
 import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothConfiguration;
 import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothService;
@@ -13,11 +17,14 @@ import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothWriter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -53,20 +60,29 @@ public class AtlasApp extends AppCompatActivity{
     public BluetoothService mService;
     public BluetoothWriter mWriter;
 
+
+    public int READ_EXST = 13;
+    public int WRITE_EXST =15;
+    public int FINE_LOCATION=16;
+    public int COURSE_LOCATION=16;
+    public DBHandler dbHandler;
+    public int language = 1;
+    public Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_atlas_app);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        language=sharedPrefs.getInt("language", 0);
+
+
+        dbHandler = new DBHandler(AtlasApp.this);
+
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -84,6 +100,26 @@ public class AtlasApp extends AppCompatActivity{
 
 
 
+        // get menu from navigationView
+        Menu menu = navigationView.getMenu();
+        // find MenuItem you want to change
+        MenuItem nav_home = menu.findItem(R.id.nav_home);
+        nav_home.setTitle(getResources().getStringArray(R.array.Home)[language]);
+
+        // do the same for other MenuItems
+        MenuItem nav_ManageReadings = menu.findItem(R.id.nav_ManageReadings);
+        nav_ManageReadings.setTitle(getResources().getStringArray(R.array.ManageReadings)[language]);
+
+
+        MenuItem nav_settings = menu.findItem(R.id.nav_settings);
+        nav_settings.setTitle(getResources().getStringArray(R.array.Settings)[language]);
+
+
+        MenuItem nav_Exit = menu.findItem(R.id.nav_Exit);
+        nav_Exit.setTitle(getResources().getStringArray(R.array.Exit)[language]);
+
+        toolbar.setTitle(getResources().getStringArray(R.array.Home)[language]);
+
         ////////////////////////////////Main Functions
 
 
@@ -94,6 +130,42 @@ public class AtlasApp extends AppCompatActivity{
         }catch (Exception error){
             Log.v(TAG,"Error");
         }
+    }
+
+
+
+    private void askForPermission(String permission, Integer requestCode) {
+        if (ContextCompat.checkSelfPermission(AtlasApp.this, permission)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    AtlasApp.this, permission)) {
+
+                //This is called if user has denied the permission before
+                //In this case I am just asking the permission again
+                ActivityCompat.requestPermissions(AtlasApp.this,
+                        new String[]{permission}, requestCode);
+
+            } else {
+                ActivityCompat.requestPermissions(AtlasApp.this,
+                        new String[]{permission}, requestCode);
+            }
+        }
+//        else {
+//            Toast.makeText(this, permission + " is already granted.",
+//                    Toast.LENGTH_SHORT).show();
+//        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        askForPermission(Manifest.permission.ACCESS_FINE_LOCATION, FINE_LOCATION);
+        askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION, COURSE_LOCATION);
+        askForPermission(Manifest.permission.READ_EXTERNAL_STORAGE, READ_EXST);
+        askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_EXST);
+
     }
 
     @Override
