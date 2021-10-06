@@ -1,7 +1,9 @@
 package com.dakrori.atlasmeasurements.ui.home;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.location.Address;
@@ -26,6 +28,8 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.dakrori.atlasmeasurements.AtlasApp;
 import com.dakrori.atlasmeasurements.R;
+import com.ebanx.swipebtn.OnStateChangeListener;
+import com.ebanx.swipebtn.SwipeButton;
 import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothService;
 import com.github.douglasjunior.bluetoothclassiclibrary.BluetoothStatus;
 import com.github.mikephil.charting.charts.LineChart;
@@ -49,9 +53,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-public class HomeFragment extends Fragment   implements BluetoothService.OnBluetoothEventCallback{
+import static androidx.core.content.PermissionChecker.checkSelfPermission;
 
-
+public class HomeFragment extends Fragment implements BluetoothService.OnBluetoothEventCallback {
 
 
     private String TAG = "ATLAS_DATA";
@@ -65,6 +69,8 @@ public class HomeFragment extends Fragment   implements BluetoothService.OnBluet
     TextView displayLong;
     TextView addressMain;
     TextView addressTextView;
+    boolean allowSaveReadings = false;
+    SwipeButton allowReading;
 
     TextView DeviceStateMain;
     ImageButton getLocationButton;
@@ -81,13 +87,15 @@ public class HomeFragment extends Fragment   implements BluetoothService.OnBluet
     LineDataSet set1Es;
 
     String cityName = null;
-//    int i = 0;
+    //    int i = 0;
     int iPH = 0;
     int iEs = 0;
 
 
     double LATITUDE = 0;
     double LONGITUDE = 0;
+
+    LocationManager locationManager;
 
     @SuppressLint("MissingPermission")
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -99,15 +107,23 @@ public class HomeFragment extends Fragment   implements BluetoothService.OnBluet
         displayES = root.findViewById(R.id.displayEs);
 
 
+        allowReading = root.findViewById(R.id.swipe_btn);
+
+        allowReading.setOnStateChangeListener(new OnStateChangeListener() {
+            @Override
+            public void onStateChange(boolean active) {
+                allowSaveReadings = active;
+//                Log.v(TAG,String.valueOf(active));
+            }
+        });
         addressMain = root.findViewById(R.id.addressMain);
         DeviceStateMain = root.findViewById(R.id.DeviceStateMain);
-
 
 
         displayLat = root.findViewById(R.id.latValue);
         displayLong = root.findViewById(R.id.longitudeValue);
         getLocationButton = root.findViewById(R.id.getLocation);
-        addressTextView =root.findViewById(R.id.address);
+        addressTextView = root.findViewById(R.id.address);
 
         chartPh = root.findViewById(R.id.chartph);
         chartEs = root.findViewById(R.id.chartes);
@@ -126,21 +142,18 @@ public class HomeFragment extends Fragment   implements BluetoothService.OnBluet
         xAxis.setTextColor(Color.rgb(255, 192, 56));
 
 
-
         YAxis yl = chartPh.getAxisLeft();
         yl.setTypeface(tfRegular);
 
 
         values = new ArrayList<>();
-        values.add(new Entry(0,0));
+        values.add(new Entry(0, 0));
         set1 = new LineDataSet(values, "PH");
         set1.setLineWidth(3f);
         set1.setCircleRadius(5f);
         set1.setColor(Color.RED);
         data = new LineData(set1);
         chartPh.setData(data);
-
-
 
 
         XAxis xAxisEs = chartEs.getXAxis();
@@ -153,13 +166,12 @@ public class HomeFragment extends Fragment   implements BluetoothService.OnBluet
         xAxisEs.setTextColor(Color.rgb(255, 192, 56));
 
 
-
         YAxis ylEs = chartEs.getAxisLeft();
         ylEs.setTypeface(tfRegular);
 
 
         valuesEs = new ArrayList<>();
-        valuesEs.add(new Entry(0,0));
+        valuesEs.add(new Entry(0, 0));
         set1Es = new LineDataSet(values, "ES");
         set1Es.setLineWidth(3f);
         set1Es.setColor(Color.GREEN);
@@ -173,14 +185,13 @@ public class HomeFragment extends Fragment   implements BluetoothService.OnBluet
         AtlasApp = (AtlasApp) getActivity();
 
 
-        if(AtlasApp.BLUETOOTH_STATE_ON){
+        if (AtlasApp.BLUETOOTH_STATE_ON) {
 
             bluetoothState.setImageDrawable(AtlasApp.getDrawable(R.drawable.bluetooth_on));
         }
 
 
-
-        LocationManager locationManager = (LocationManager)
+        locationManager = (LocationManager)
                 AtlasApp.getSystemService(Context.LOCATION_SERVICE);
 
         LocationListener locationListener = new LocationListener() {
@@ -201,10 +212,9 @@ public class HomeFragment extends Fragment   implements BluetoothService.OnBluet
 
                         cityName = addresses.get(0).getLocality();
                         addressTextView.setText(cityName);
-                        Log.v("AhmedSql",cityName);
+                        Log.v("AhmedSql", cityName);
                     }
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -223,6 +233,8 @@ public class HomeFragment extends Fragment   implements BluetoothService.OnBluet
             public void onProviderDisabled(String s) {
 
             }
+
+
         };
 
         getLocationButton.setOnClickListener(new View.OnClickListener() {
@@ -230,7 +242,30 @@ public class HomeFragment extends Fragment   implements BluetoothService.OnBluet
             public void onClick(View view) {
 
                 locationManager.requestLocationUpdates(
-                        LocationManager.GPS_PROVIDER, 5, 1, locationListener);
+                        LocationManager.GPS_PROVIDER, 1, 1, locationListener);
+                Location location = getLastBestLocation();
+
+
+                LONGITUDE = location.getLongitude();
+                LATITUDE = location.getLatitude();
+
+                displayLong.setText(String.valueOf(LONGITUDE));
+                displayLat.setText(String.valueOf(LATITUDE));
+
+                Geocoder gcd = new Geocoder(AtlasApp.getBaseContext(), Locale.getDefault());
+                List<Address> addresses;
+                try {
+                    addresses = gcd.getFromLocation(location.getLatitude(),
+                            location.getLongitude(), 1);
+                    if (addresses.size() > 0) {
+
+                        cityName = addresses.get(0).getLocality();
+                        addressTextView.setText(cityName);
+                        Log.v("AhmedSql", cityName);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -239,6 +274,45 @@ public class HomeFragment extends Fragment   implements BluetoothService.OnBluet
     }
 
 
+    /**
+     * @return the last know best location
+     */
+    private Location getLastBestLocation() {
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    Activity#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for Activity#requestPermissions for more details.
+
+        }
+
+        Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location locationNet = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+        long GPSLocationTime = 0;
+        if (null != locationGPS) { GPSLocationTime = locationGPS.getTime(); }
+
+        long NetLocationTime = 0;
+
+        if (null != locationNet) {
+            NetLocationTime = locationNet.getTime();
+        }
+
+        if ( 0 < GPSLocationTime - NetLocationTime ) {
+            return locationGPS;
+        }
+        else {
+            return locationNet;
+        }
+    }
+
+    private int checkSelfPermission(String accessFineLocation) {
+
+        return 1;
+    }
 
 
     @Override
@@ -246,6 +320,7 @@ public class HomeFragment extends Fragment   implements BluetoothService.OnBluet
         super.onResume();
         addressMain.setText(getActivity().getResources().getStringArray(R.array.Address)[AtlasApp.language]);
         DeviceStateMain.setText(getActivity().getResources().getStringArray(R.array.DeviceState)[AtlasApp.language]);
+        allowReading.setText(getActivity().getResources().getStringArray(R.array.buttonSwip)[AtlasApp.language]);
 
         AtlasApp.toolbar.setTitle(getActivity().getResources().getStringArray(R.array.Home)[AtlasApp.language]);
         try {
@@ -289,8 +364,9 @@ public class HomeFragment extends Fragment   implements BluetoothService.OnBluet
                 chartPh.moveViewTo(data.getEntryCount() - 7, 50f, YAxis.AxisDependency.LEFT);
                 iPH++;
 
-                AtlasApp.dbHandler.addReading(String.valueOf(LATITUDE),String.valueOf(LONGITUDE),"PH",dataJson.getString("PH"),new Date());
-
+                if(allowSaveReadings) {
+                    AtlasApp.dbHandler.addReading(String.valueOf(LATITUDE), String.valueOf(LONGITUDE), "PH", dataJson.getString("PH"), new Date());
+                }
             }else{
 
                 displayES.setText(dataJson.getString("EC"));
@@ -313,8 +389,9 @@ public class HomeFragment extends Fragment   implements BluetoothService.OnBluet
                 chartEs.notifyDataSetChanged();
                 chartEs.moveViewTo(data.getEntryCount() - 7, 50f, YAxis.AxisDependency.LEFT);
                 iEs++;
-                AtlasApp.dbHandler.addReading(String.valueOf(LATITUDE),String.valueOf(LONGITUDE),"EC",dataJson.getString("EC"),new Date());
-
+                if(allowSaveReadings) {
+                    AtlasApp.dbHandler.addReading(String.valueOf(LATITUDE), String.valueOf(LONGITUDE), "EC", dataJson.getString("EC"), new Date());
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();

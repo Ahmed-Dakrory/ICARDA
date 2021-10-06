@@ -35,6 +35,7 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.1'
     implementation group: 'net.sourceforge.jexcelapi', name: 'jxl', version: '2.6'
     implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
+    implementation 'com.ebanx:swipe-button:0.8.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
     implementation 'androidx.navigation:navigation-fragment:2.0.0'

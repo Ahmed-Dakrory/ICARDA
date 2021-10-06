@@ -76,6 +76,13 @@
     </string-array>
 
 
+
+    <string-array name="buttonSwip">
+        <item >Recording Off</item>
+        <item >التسجيل مغلق</item>
+    </string-array>
+
+
     <string-array name="languageSelect">
         <item >Select App Language</item>
         <item >برجاء اختيار لغة التطبيق</item>
