@@ -22,13 +22,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat"
         tools:replace="android:icon">
-
-
-        <activity android:name=".Bluetooth.bluetoothHandle"></activity>
+        <activity android:name=".Bluetooth.bluetoothHandle" />
         <activity
             android:name=".AtlasApp"
             android:label="@string/title_activity_atlas_app"
-            android:theme="@style/NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

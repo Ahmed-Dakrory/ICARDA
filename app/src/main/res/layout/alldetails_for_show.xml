@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp"
+    android:background="@color/mdtp_white">
+
+
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dataH"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_margin="@dimen/marginTopTextEdit"
+            android:layout_height="match_parent"
+            android:textColor="#464444"
+            android:text="@string/AdjustedIrregation"
+            android:textSize="@dimen/sizeBold"
+            android:id="@+id/AdjustedIrregationViewHead"
+            android:gravity="center"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/sizeSmall"
+            android:gravity="right"
+            android:inputType="numberDecimal"
+            android:text="1.0"
+            android:padding="17dp"
+            android:layout_gravity="center"
+            android:textColor="#464444"
+            android:id="@+id/AdjustedIrregationView">
+
+        </EditText>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sepHight"
+        android:foreground="#ACABAB"
+        android:layout_marginLeft="11dp"
+        android:layout_marginRight="11dp"
+        android:layout_marginTop="3dp"
+        android:background="?android:attr/listDivider" />
+
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dataH"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_margin="@dimen/marginTopTextEdit"
+            android:layout_height="match_parent"
+            android:text="@string/Ph_Soil"
+            android:textColor="#464444"
+            android:textSize="@dimen/sizeBold"
+            android:id="@+id/Ph_soil"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/sizeSmall"
+            android:gravity="right"
+            android:padding="17dp"
+            android:textColor="#464444"
+            android:layout_gravity="center"
+            android:id="@+id/Ph_soil_value">
+
+        </TextView>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sepHight"
+        android:foreground="#ACABAB"
+        android:layout_marginLeft="11dp"
+        android:layout_marginRight="11dp"
+        android:layout_marginTop="3dp"
+        android:background="?android:attr/listDivider" />
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dataH"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_margin="@dimen/marginTopTextEdit"
+            android:layout_height="match_parent"
+            android:text="@string/Ph_water"
+            android:textColor="#464444"
+            android:textSize="@dimen/sizeBold"
+            android:id="@+id/Ph_water"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/sizeSmall"
+            android:gravity="right"
+            android:padding="17dp"
+            android:textColor="#464444"
+            android:layout_gravity="center"
+            android:id="@+id/Ph_water_value">
+
+        </TextView>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sepHight"
+        android:foreground="#ACABAB"
+        android:layout_marginLeft="11dp"
+        android:layout_marginRight="11dp"
+        android:layout_marginTop="3dp"
+        android:background="?android:attr/listDivider" />
+
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dataH"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_margin="@dimen/marginTopTextEdit"
+            android:layout_height="match_parent"
+            android:text="@string/EC_Soil"
+            android:textColor="#464444"
+            android:textSize="@dimen/sizeBold"
+            android:id="@+id/EC_soil"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/sizeSmall"
+            android:gravity="right"
+            android:padding="17dp"
+            android:textColor="#464444"
+            android:layout_gravity="center"
+            android:id="@+id/EC_soil_value">
+
+        </TextView>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sepHight"
+        android:foreground="#ACABAB"
+        android:layout_marginLeft="11dp"
+        android:layout_marginRight="11dp"
+        android:layout_marginTop="3dp"
+        android:background="?android:attr/listDivider" />
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dataH"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_margin="@dimen/marginTopTextEdit"
+            android:layout_height="match_parent"
+            android:text="@string/EC_water"
+            android:textColor="#464444"
+            android:textSize="@dimen/sizeBold"
+            android:id="@+id/EC_water"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/sizeSmall"
+            android:gravity="right"
+            android:padding="17dp"
+            android:textColor="#464444"
+            android:layout_gravity="center"
+            android:id="@+id/EC_water_value">
+
+        </TextView>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sepHight"
+        android:foreground="#ACABAB"
+        android:layout_marginLeft="11dp"
+        android:layout_marginRight="11dp"
+        android:layout_marginTop="3dp"
+        android:background="?android:attr/listDivider" />
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dataH"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_margin="@dimen/marginTopTextEdit"
+            android:layout_height="match_parent"
+            android:text="@string/LF"
+            android:textColor="#464444"
+            android:textSize="@dimen/sizeBold"
+            android:id="@+id/LF"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/sizeSmall"
+            android:gravity="right"
+            android:padding="17dp"
+            android:textColor="#464444"
+            android:layout_gravity="center"
+            android:id="@+id/LF_value">
+
+        </TextView>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sepHight"
+        android:foreground="#ACABAB"
+        android:layout_marginLeft="11dp"
+        android:layout_marginRight="11dp"
+        android:layout_marginTop="3dp"
+        android:background="?android:attr/listDivider" />
+
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dataH"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_margin="@dimen/marginTopTextEdit"
+            android:layout_height="match_parent"
+            android:text="@string/CEC"
+            android:textColor="#464444"
+            android:textSize="@dimen/sizeBold"
+            android:id="@+id/CEC"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/sizeSmall"
+            android:gravity="right"
+            android:padding="17dp"
+            android:textColor="#464444"
+            android:layout_gravity="center"
+            android:id="@+id/CEC_value">
+
+        </TextView>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sepHight"
+        android:foreground="#ACABAB"
+        android:layout_marginLeft="11dp"
+        android:layout_marginRight="11dp"
+        android:layout_marginTop="3dp"
+        android:background="?android:attr/listDivider" />
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dataH"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_margin="@dimen/marginTopTextEdit"
+            android:layout_height="match_parent"
+            android:text="@string/I_Adjusted"
+            android:textColor="#464444"
+            android:textSize="@dimen/sizeBold"
+            android:id="@+id/I_Adjusted"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/sizeSmall"
+            android:gravity="right"
+            android:padding="17dp"
+            android:textColor="#464444"
+            android:layout_gravity="center"
+            android:id="@+id/I_Adjusted_value">
+
+        </TextView>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sepHight"
+        android:foreground="#ACABAB"
+        android:layout_marginLeft="11dp"
+        android:layout_marginRight="11dp"
+        android:layout_marginTop="3dp"
+        android:background="?android:attr/listDivider" />
+
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:id="@+id/showData"
+        android:text="Results">
+
+    </Button>
+
+</LinearLayout>

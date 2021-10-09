@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/mdtp_white"
+        android:layout_margin="5dp"
+        android:padding="20dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dataH"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_margin="@dimen/marginTopTextEdit"
+                android:layout_height="match_parent"
+                android:textColor="#464444"
+                android:id="@+id/siteAddressviewDialog"
+                android:text="@string/siteAddress"
+                android:textSize="@dimen/sizeBold"
+                android:gravity="center"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/sizeSmall"
+                android:gravity="right"
+                android:text=""
+                android:inputType="text"
+                android:padding="@dimen/paddingGen"
+                android:layout_gravity="center"
+                android:textColor="#464444"
+                android:id="@+id/siteAddressEdit">
+
+            </EditText>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/sepHight"
+            android:foreground="#ACABAB"
+            android:layout_marginLeft="11dp"
+            android:layout_marginRight="11dp"
+            android:layout_marginTop="3dp"
+            android:background="?android:attr/listDivider" />
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dataH"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_margin="@dimen/marginTopTextEdit"
+                android:layout_height="match_parent"
+                android:textColor="#464444"
+                android:text="@string/CropType"
+                android:id="@+id/cropTypeViewDialog"
+                android:textSize="@dimen/sizeBold"
+                android:gravity="center"/>
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/sizeSmall"
+                android:gravity="right"
+                android:entries="@array/cropType"
+                android:inputType="numberDecimal"
+                android:padding="@dimen/paddingGen"
+                android:layout_gravity="center"
+                android:textColor="#464444"
+                android:id="@+id/spinnerCropType">
+
+            </androidx.appcompat.widget.AppCompatSpinner>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/sepHight"
+            android:foreground="#ACABAB"
+            android:layout_marginLeft="11dp"
+            android:layout_marginRight="11dp"
+            android:layout_marginTop="3dp"
+            android:background="?android:attr/listDivider" />
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dataH"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_margin="@dimen/marginTopTextEdit"
+                android:layout_height="match_parent"
+                android:textColor="#464444"
+                android:text="@string/SoilType"
+                android:id="@+id/soilTypeViewDialog"
+                android:textSize="@dimen/sizeBold"
+                android:gravity="center"/>
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/sizeSmall"
+                android:gravity="right"
+                android:inputType="numberDecimal"
+                android:padding="@dimen/paddingGen"
+                android:layout_gravity="center"
+                android:textColor="#464444"
+                android:entries="@array/soilType"
+                android:id="@+id/soilTypeEdit">
+
+            </androidx.appcompat.widget.AppCompatSpinner>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/sepHight"
+            android:foreground="#ACABAB"
+            android:layout_marginLeft="11dp"
+            android:layout_marginRight="11dp"
+            android:layout_marginTop="3dp"
+            android:background="?android:attr/listDivider" />
+
+
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dataH"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_margin="@dimen/marginTopTextEdit"
+                android:layout_height="match_parent"
+                android:textColor="#464444"
+                android:text="@string/Type"
+                android:id="@+id/typeDialog"
+                android:textSize="@dimen/sizeBold"
+                android:gravity="center"/>
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/sizeSmall"
+                android:gravity="right"
+                android:inputType="numberDecimal"
+                android:padding="@dimen/paddingGen"
+                android:layout_gravity="center"
+                android:textColor="#464444"
+                android:entries="@array/Type"
+                android:id="@+id/TypeEdit">
+
+            </androidx.appcompat.widget.AppCompatSpinner>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/sepHight"
+            android:foreground="#ACABAB"
+            android:layout_marginLeft="11dp"
+            android:layout_marginRight="11dp"
+            android:layout_marginTop="3dp"
+            android:background="?android:attr/listDivider" />
+
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:weightSum="1">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Save"
+            android:id="@+id/saveButtonAlert"
+            android:layout_weight="0.5"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Cancel"
+            android:id="@+id/cancelButtonAlert"
+            android:layout_weight="0.5"/>
+
+    </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

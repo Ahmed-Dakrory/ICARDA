@@ -119,7 +119,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:layout_weight="0.5"
-                    android:text="ES"
+                    android:text="EC"
                     android:fontFamily="@font/robotomedium"
                     android:textColor="#2196F3"
                     android:textFontWeight="800"
@@ -139,78 +139,41 @@
 
         </LinearLayout>
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_margin="15dp"
+            android:id="@+id/buttonSetParameters"
+            android:text="Set the Parameters"
+            android:textColor="#666464"
+            android:background="@drawable/design3">
 
-        <LinearLayout
+        </Button>
+
+
+        <com.alespero.expandablecardview.ExpandableCardView
             android:layout_marginTop="35dp"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:padding="15dp"
-            android:background="@drawable/design3"
-            android:weightSum="1"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:layout_weight="0.3"
-                android:text="Lat:"
-                android:id="@+id/latValue"
-                android:textColor="#2196F3"
-                android:textFontWeight="800"
-                android:textSize="55px" />
-
-            <TextView
-                android:id="@+id/longitudeValue"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="Long:"
-                android:layout_weight="0.3"
-                android:textColor="#2196F3"
-                android:textFontWeight="300"
-                android:textSize="55px" />
-
-            <ImageButton
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.4"
-                android:id="@+id/getLocation"
-                android:scaleType="fitXY"
-                android:background="@drawable/design1"
-                android:src="@drawable/location"/>
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            app:animationDuration="300"
+            app:expandOnClick="true"
+            android:layout_margin="15dp"
+            android:id="@+id/expandedDetails"
+            app:icon="@drawable/ic_menu_share"
+            app:inner_view="@layout/alldetails"
+            app:startExpanded="false"
+            android:background="#fff"
+            app:title="All Details">
 
 
-    <LinearLayout
-        android:layout_marginTop="35dp"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:weightSum="1"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_weight="0.5"
-            android:text="Address:"
-            android:id="@+id/addressMain"
-            android:textColor="#2196F3"
-            android:textFontWeight="800"
-            android:textSize="55px" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_weight="0.5"
-            android:id="@+id/address"
-            android:text="------"
-            android:textColor="#2196F3"
-            android:textFontWeight="800"
-            android:textSize="55px" />
+        </com.alespero.expandablecardview.ExpandableCardView>
 
-        </LinearLayout>
-        <LinearLayout
+
+
+
+<LinearLayout
             android:layout_marginTop="15dp"
             android:padding="15dp"
             android:layout_width="match_parent"

@@ -36,6 +36,10 @@ public class DBHandler extends SQLiteOpenHelper {
 
     private static final String VALUE = "valueOfData";
     private static final String DateTime = "datetimeNow";
+    private static final String WaterOrSoil = "WaterOrSoil";
+    private static final String Address = "Address";
+    private static final String SOIL_TYPE = "SOIL_TYPE";
+    private static final String CROP_TYPE = "CROP_TYPE";
 
     // creating a constructor for our database handler.
     public DBHandler(Context context) {
@@ -55,7 +59,11 @@ public class DBHandler extends SQLiteOpenHelper {
                 + LONGITUDE + " TEXT,"
                 + TYPE + " TEXT,"
                 + VALUE + " TEXT,"
-                + DateTime + " DATETIME)";
+                + DateTime + " DATETIME,"
+                + WaterOrSoil + " TEXT,"
+                + Address + " TEXT,"
+                + SOIL_TYPE + " TEXT,"
+                + CROP_TYPE + " TEXT )";
 
         // at last we are calling a exec sql
         // method to execute above sql query
@@ -64,7 +72,8 @@ public class DBHandler extends SQLiteOpenHelper {
 
     // this method is use to add new course to our sqlite database.
     public void addReading(String LAT_data
-            , String LONGITUDE_data, String type_data, String Value_data, Date datetimeNow_data) {
+            , String LONGITUDE_data, String type_data, String Value_data, Date datetimeNow_data,
+                           String WaterOrSoil1,String Address1,String SOIL_TYPE1,String CROP_TYPE1) {
 
         // on below line we are creating a variable for
         // our sqlite database and calling writable method
@@ -82,6 +91,10 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(TYPE, type_data);
         values.put(VALUE, Value_data);
         values.put(DateTime,getDateTime(datetimeNow_data));
+        values.put(WaterOrSoil, WaterOrSoil1);
+        values.put(Address, Address1);
+        values.put(SOIL_TYPE, SOIL_TYPE1);
+        values.put(CROP_TYPE, CROP_TYPE1);
 
         // after adding all values we are passing
         // content values to our table.
@@ -111,7 +124,11 @@ public class DBHandler extends SQLiteOpenHelper {
                         cursor.getString(2),
                         cursor.getString(3),
                         cursor.getString(4),
-                        cursor.getString(5));
+                        cursor.getString(5),
+                        cursor.getString(6),
+                        cursor.getString(7),
+                        cursor.getString(8),
+                        cursor.getString(9));
                 ReadingList.add(readData);
             } while (cursor.moveToNext());
         }
@@ -120,6 +137,37 @@ public class DBHandler extends SQLiteOpenHelper {
         return ReadingList;
 
     }
+
+
+
+
+    public float getReadings_of_TYPE_and_WATERORSOIL(String DateStart,String DateEnd,String TYPE_DATA,
+                                                                   String WATERORSOIL){
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<ReadingObject> ReadingList = new ArrayList<ReadingObject>();
+
+        String selectQuery = "SELECT  AVG("+VALUE+") FROM " + TABLE_NAME +" WHERE "+TYPE+" = \""+TYPE_DATA+"\" AND "+
+                WaterOrSoil+" = \""+WATERORSOIL+"\" AND "+DateTime+" BETWEEN \""+DateStart
+                +"\" AND  \""+DateEnd+"\"";
+        Log.v("Ahmedsql",selectQuery);
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                return Float.parseFloat(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+
+        // return contact list
+        return 0;
+
+    }
+
+
+
+
     private String getDateTime(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "yyyy-MM-dd HH:mm:ss", Locale.getDefault());

@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp"
+    android:background="@color/mdtp_white">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dataH"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_margin="@dimen/marginTopTextEdit"
+            android:layout_height="match_parent"
+            android:text="@string/Latitude"
+            android:textColor="#464444"
+            android:id="@+id/latValueHead"
+            android:textSize="@dimen/sizeBold"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/sizeSmall"
+            android:layout_gravity="center"
+            android:gravity="right"
+            android:padding="17dp"
+            android:textColor="#464444"
+            android:id="@+id/latValue">
+
+        </TextView>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sepHight"
+        android:foreground="#ACABAB"
+        android:layout_marginLeft="11dp"
+        android:layout_marginRight="11dp"
+        android:layout_marginTop="3dp"
+        android:background="?android:attr/listDivider" />
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dataH"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_margin="@dimen/marginTopTextEdit"
+            android:layout_height="match_parent"
+            android:text="@string/Longitude"
+            android:textColor="#464444"
+            android:textSize="@dimen/sizeBold"
+            android:id="@+id/longitudeValueHead"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:textColor="#464444"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/sizeSmall"
+            android:text="29.1855"
+            android:gravity="right"
+            android:padding="17dp"
+            android:layout_gravity="center"
+            android:id="@+id/longitudeValue">
+
+        </TextView>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sepHight"
+        android:foreground="#ACABAB"
+        android:layout_marginLeft="11dp"
+        android:layout_marginRight="11dp"
+        android:layout_marginTop="3dp"
+        android:background="?android:attr/listDivider" />
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dataH"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_margin="@dimen/marginTopTextEdit"
+            android:layout_height="match_parent"
+            android:textColor="#464444"
+            android:text="@string/CropType"
+            android:textSize="@dimen/sizeBold"
+            android:id="@+id/cropTypeViewHead"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="#464444"
+            android:textSize="@dimen/sizeSmall"
+            android:gravity="right"
+            android:padding="17dp"
+            android:layout_gravity="center"
+            android:id="@+id/cropTypeView">
+
+        </TextView>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sepHight"
+        android:foreground="#ACABAB"
+        android:layout_marginLeft="11dp"
+        android:layout_marginRight="11dp"
+        android:layout_marginTop="3dp"
+        android:background="?android:attr/listDivider" />
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dataH"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:textColor="#464444"
+            android:layout_margin="@dimen/marginTopTextEdit"
+            android:layout_height="match_parent"
+            android:text="@string/SoilType"
+            android:id="@+id/soilTypeViewHead"
+            android:textSize="@dimen/sizeBold"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="right"
+            android:padding="17dp"
+            android:textSize="@dimen/sizeSmall"
+            android:textColor="#464444"
+            android:layout_gravity="center"
+            android:id="@+id/soilTypeView">
+
+        </TextView>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sepHight"
+        android:foreground="#ACABAB"
+        android:layout_marginLeft="11dp"
+        android:layout_marginRight="11dp"
+        android:layout_marginTop="3dp"
+        android:background="?android:attr/listDivider" />
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dataH"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_margin="@dimen/marginTopTextEdit"
+            android:layout_height="match_parent"
+            android:text="@string/Sitename"
+            android:textColor="#464444"
+            android:textSize="@dimen/sizeBold"
+            android:id="@+id/sitenameViewHead"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="right"
+            android:padding="17dp"
+            android:textSize="@dimen/sizeSmall"
+            android:textColor="#464444"
+            android:layout_gravity="center"
+            android:id="@+id/sitenameView">
+
+        </TextView>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sepHight"
+        android:foreground="#ACABAB"
+        android:layout_marginLeft="11dp"
+        android:layout_marginRight="11dp"
+        android:layout_marginTop="3dp"
+        android:background="?android:attr/listDivider" />
+
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dataH"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_margin="@dimen/marginTopTextEdit"
+            android:layout_height="match_parent"
+            android:text="@string/SoilOrWater"
+            android:textColor="#464444"
+            android:textSize="@dimen/sizeBold"
+            android:id="@+id/soilorwaterViewHead"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/sizeSmall"
+            android:gravity="right"
+            android:padding="17dp"
+            android:textColor="#464444"
+            android:layout_gravity="center"
+            android:id="@+id/soilorwaterView">
+
+        </TextView>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sepHight"
+        android:foreground="#ACABAB"
+        android:layout_marginLeft="11dp"
+        android:layout_marginRight="11dp"
+        android:layout_marginTop="3dp"
+        android:background="?android:attr/listDivider" />
+
+
+
+
+</LinearLayout>

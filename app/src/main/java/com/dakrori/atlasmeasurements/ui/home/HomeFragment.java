@@ -2,10 +2,12 @@ package com.dakrori.atlasmeasurements.ui.home;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -17,16 +19,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.alespero.expandablecardview.ExpandableCardView;
 import com.dakrori.atlasmeasurements.AtlasApp;
+import com.dakrori.atlasmeasurements.MainActivity;
 import com.dakrori.atlasmeasurements.R;
 import com.ebanx.swipebtn.OnStateChangeListener;
 import com.ebanx.swipebtn.SwipeButton;
@@ -51,6 +57,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import static androidx.core.content.PermissionChecker.checkSelfPermission;
@@ -65,17 +72,29 @@ public class HomeFragment extends Fragment implements BluetoothService.OnBluetoo
     TextView displayPh;
     TextView displayES;
 
+    Button buttonSetParameters;
+
     TextView displayLat;
     TextView displayLong;
-    TextView addressMain;
-    TextView addressTextView;
+    TextView displayLatHead;
+    TextView displayLongHead;
+    TextView soilorwaterViewHead;
+    TextView soilorwaterView;
+    TextView sitenameView;
+    TextView sitenameViewHead;
+    TextView soilTypeView;
+    TextView soilTypeViewHead;
+    TextView cropTypeView;
+    TextView cropTypeViewHead;
+
+
     boolean allowSaveReadings = false;
     SwipeButton allowReading;
 
     TextView DeviceStateMain;
-    ImageButton getLocationButton;
 
     ImageView bluetoothState;
+    ExpandableCardView expandedDetails;
     private LineChart chartPh;
     private LineChart chartEs;
     Typeface tfRegular;
@@ -96,7 +115,7 @@ public class HomeFragment extends Fragment implements BluetoothService.OnBluetoo
     double LONGITUDE = 0;
 
     LocationManager locationManager;
-
+    LocationListener locationListener;
     @SuppressLint("MissingPermission")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -106,8 +125,17 @@ public class HomeFragment extends Fragment implements BluetoothService.OnBluetoo
         displayPh = root.findViewById(R.id.displayPH);
         displayES = root.findViewById(R.id.displayEs);
 
-
+        buttonSetParameters = root.findViewById(R.id.buttonSetParameters);
         allowReading = root.findViewById(R.id.swipe_btn);
+
+        expandedDetails = root.findViewById(R.id.expandedDetails);
+
+        buttonSetParameters.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            openTheAlertOFParameters();
+            }
+        });
 
         allowReading.setOnStateChangeListener(new OnStateChangeListener() {
             @Override
@@ -116,14 +144,23 @@ public class HomeFragment extends Fragment implements BluetoothService.OnBluetoo
 //                Log.v(TAG,String.valueOf(active));
             }
         });
-        addressMain = root.findViewById(R.id.addressMain);
+
         DeviceStateMain = root.findViewById(R.id.DeviceStateMain);
 
 
         displayLat = root.findViewById(R.id.latValue);
         displayLong = root.findViewById(R.id.longitudeValue);
-        getLocationButton = root.findViewById(R.id.getLocation);
-        addressTextView = root.findViewById(R.id.address);
+        displayLatHead = root.findViewById(R.id.latValueHead);
+        displayLongHead = root.findViewById(R.id.longitudeValueHead);
+
+        soilorwaterViewHead = root.findViewById(R.id.soilorwaterViewHead);
+        soilorwaterView = root.findViewById(R.id.soilorwaterView);
+        sitenameView = root.findViewById(R.id.sitenameView);
+        sitenameViewHead = root.findViewById(R.id.sitenameViewHead);
+        soilTypeView = root.findViewById(R.id.soilTypeView);
+        soilTypeViewHead = root.findViewById(R.id.soilTypeViewHead);
+        cropTypeView = root.findViewById(R.id.cropTypeView);
+        cropTypeViewHead = root.findViewById(R.id.cropTypeViewHead);
 
         chartPh = root.findViewById(R.id.chartph);
         chartEs = root.findViewById(R.id.chartes);
@@ -172,7 +209,7 @@ public class HomeFragment extends Fragment implements BluetoothService.OnBluetoo
 
         valuesEs = new ArrayList<>();
         valuesEs.add(new Entry(0, 0));
-        set1Es = new LineDataSet(values, "ES");
+        set1Es = new LineDataSet(values, "EC");
         set1Es.setLineWidth(3f);
         set1Es.setColor(Color.GREEN);
         set1Es.setCircleRadius(5f);
@@ -194,7 +231,7 @@ public class HomeFragment extends Fragment implements BluetoothService.OnBluetoo
         locationManager = (LocationManager)
                 AtlasApp.getSystemService(Context.LOCATION_SERVICE);
 
-        LocationListener locationListener = new LocationListener() {
+        locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 LONGITUDE = location.getLongitude();
@@ -211,7 +248,7 @@ public class HomeFragment extends Fragment implements BluetoothService.OnBluetoo
                     if (addresses.size() > 0) {
 
                         cityName = addresses.get(0).getLocality();
-                        addressTextView.setText(cityName);
+//                        addressTextView.setText(cityName);
                         Log.v("AhmedSql", cityName);
                     }
                 } catch (IOException e) {
@@ -237,43 +274,124 @@ public class HomeFragment extends Fragment implements BluetoothService.OnBluetoo
 
         };
 
-        getLocationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                locationManager.requestLocationUpdates(
-                        LocationManager.GPS_PROVIDER, 1, 1, locationListener);
-                Location location = getLastBestLocation();
-
-
-                LONGITUDE = location.getLongitude();
-                LATITUDE = location.getLatitude();
-
-                displayLong.setText(String.valueOf(LONGITUDE));
-                displayLat.setText(String.valueOf(LATITUDE));
-
-                Geocoder gcd = new Geocoder(AtlasApp.getBaseContext(), Locale.getDefault());
-                List<Address> addresses;
-                try {
-                    addresses = gcd.getFromLocation(location.getLatitude(),
-                            location.getLongitude(), 1);
-                    if (addresses.size() > 0) {
-
-                        cityName = addresses.get(0).getLocality();
-                        addressTextView.setText(cityName);
-                        Log.v("AhmedSql", cityName);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
 
 
         return root;
     }
 
 
+    public String CropType = "1";
+    public String SoilType = "1";
+    public String SoilOrWater = "Soil";
+    public String address = "";
+
+    public void openTheAlertOFParameters(){
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(AtlasApp);
+        View alertView = getLayoutInflater().inflate(R.layout.activity_dialog_for_data, null);
+
+        //Set the view
+        alert.setView(alertView);
+        //Show alert
+        final AlertDialog alertDialog = alert.show();
+        //Can not close the alert by touching outside.
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        EditText siteAddressEdit = (EditText) alertView.findViewById(R.id.siteAddressEdit);
+        AppCompatSpinner spinnerCropType = (AppCompatSpinner) alertView.findViewById(R.id.spinnerCropType);
+        AppCompatSpinner soilTypeEdit = (AppCompatSpinner) alertView.findViewById(R.id.soilTypeEdit);
+        AppCompatSpinner TypeEdit = (AppCompatSpinner) alertView.findViewById(R.id.TypeEdit);
+
+
+
+        TextView siteAddressviewDialog = (TextView) alertView.findViewById(R.id.siteAddressviewDialog);
+        TextView cropTypeViewDialog = (TextView) alertView.findViewById(R.id.cropTypeViewDialog);
+        TextView soilTypeViewDialog = (TextView) alertView.findViewById(R.id.soilTypeViewDialog);
+        TextView typeDialog = (TextView) alertView.findViewById(R.id.typeDialog);
+
+
+        siteAddressviewDialog.setText(getActivity().getResources().getStringArray(R.array.Address)[AtlasApp.language]);
+        cropTypeViewDialog.setText(getActivity().getResources().getStringArray(R.array.cropTypeViewDialog)[AtlasApp.language]);
+        soilTypeViewDialog.setText(getActivity().getResources().getStringArray(R.array.soilTypeViewDialog)[AtlasApp.language]);
+        typeDialog.setText(getActivity().getResources().getStringArray(R.array.TypeView)[AtlasApp.language]);
+        typeDialog.setText(getActivity().getResources().getStringArray(R.array.TypeView)[AtlasApp.language]);
+
+        Button saveButton = (Button) alertView.findViewById(R.id.saveButtonAlert);
+        saveButton.setText(getActivity().getResources().getStringArray(R.array.Save)[AtlasApp.language]);
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                address = siteAddressEdit.getText().toString();
+                SoilType = soilTypeEdit.getSelectedItem().toString();
+                CropType = spinnerCropType.getSelectedItem().toString();
+                SoilOrWater = TypeEdit.getSelectedItem().toString();
+
+
+                setValuesFortheMainDetails();
+
+                alertDialog.dismiss();
+            }
+        });
+
+
+
+        Button cancelButton = (Button) alertView.findViewById(R.id.cancelButtonAlert);
+
+        cancelButton.setText(getActivity().getResources().getStringArray(R.array.Cancel)[AtlasApp.language]);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+
+    }
+
+    private void setValuesFortheMainDetails() {
+
+
+        soilorwaterView.setText(SoilOrWater);
+        sitenameView.setText(address);
+        soilTypeView.setText(SoilType);
+        cropTypeView.setText(CropType);
+    }
+
+    @SuppressLint("MissingPermission")
+    private void getLocation(LocationListener locationListener) {
+
+        locationManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER, 1, 1, locationListener);
+        Location location = getLastBestLocation();
+
+
+        LONGITUDE = location.getLongitude();
+        LATITUDE = location.getLatitude();
+        Log.v(TAG,"AhmedNew");
+        displayLong.setText(String.valueOf(LONGITUDE));
+        displayLat.setText(String.valueOf(LATITUDE));
+
+        Geocoder gcd = new Geocoder(AtlasApp.getBaseContext(), Locale.getDefault());
+        List<Address> addresses;
+        try {
+            addresses = gcd.getFromLocation(location.getLatitude(),
+                    location.getLongitude(), 1);
+            if (addresses.size() > 0) {
+
+                cityName = addresses.get(0).getLocality();
+//                addressTextView.setText(cityName);
+                Log.v("AhmedSql", cityName);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
     /**
      * @return the last know best location
      */
@@ -318,16 +436,66 @@ public class HomeFragment extends Fragment implements BluetoothService.OnBluetoo
     @Override
     public void onResume() {
         super.onResume();
-        addressMain.setText(getActivity().getResources().getStringArray(R.array.Address)[AtlasApp.language]);
         DeviceStateMain.setText(getActivity().getResources().getStringArray(R.array.DeviceState)[AtlasApp.language]);
         allowReading.setText(getActivity().getResources().getStringArray(R.array.buttonSwip)[AtlasApp.language]);
 
         AtlasApp.toolbar.setTitle(getActivity().getResources().getStringArray(R.array.Home)[AtlasApp.language]);
+
+        expandedDetails.setTitle(getActivity().getResources().getStringArray(R.array.AllDetails)[AtlasApp.language]);
+        buttonSetParameters.setText(getActivity().getResources().getStringArray(R.array.SettheParameters)[AtlasApp.language]);
+
+        displayLatHead.setText(getActivity().getResources().getStringArray(R.array.Lat)[AtlasApp.language]);
+        displayLongHead.setText(getActivity().getResources().getStringArray(R.array.longitude)[AtlasApp.language]);
+        soilorwaterViewHead.setText(getActivity().getResources().getStringArray(R.array.TypeView)[AtlasApp.language]);
+        sitenameViewHead.setText(getActivity().getResources().getStringArray(R.array.Address)[AtlasApp.language]);
+        soilTypeViewHead.setText(getActivity().getResources().getStringArray(R.array.soilTypeViewDialog)[AtlasApp.language]);
+        cropTypeViewHead.setText(getActivity().getResources().getStringArray(R.array.cropTypeViewDialog)[AtlasApp.language]);
+
+        setValuesFortheMainDetails();
         try {
             AtlasApp.mService.setOnEventCallback(this);
         }catch (Exception error){
             Log.v(TAG,"Error");
         }
+
+
+
+        getLocation(locationListener);
+//
+//        final int[] i = {0};
+//        Thread re = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                while (i[0] <1000){
+//
+//
+//                    if(allowSaveReadings) {
+//                        Random rand = new Random();
+//
+//                        String number = String.valueOf(rand.nextFloat() * (999 - 0) + 0);
+//                        AtlasApp.dbHandler.addReading(String.valueOf(LATITUDE), String.valueOf(LONGITUDE),
+//                                "PH", number, new Date(), SoilOrWater, address, SoilType, CropType);
+//
+//
+//                        rand = new Random();
+//
+//                        number = String.valueOf(rand.nextFloat() * (999 - 0) + 0);
+//                        AtlasApp.dbHandler.addReading(String.valueOf(LATITUDE), String.valueOf(LONGITUDE),
+//                                "EC", number, new Date(), SoilOrWater, address, SoilType, CropType);
+//                        try {
+//                            Thread.sleep(300);
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                        i[0]++;
+//                        Log.v(TAG,number);
+//                    }
+//
+//                }
+//            }
+//        });
+//
+//        re.start();
     }
 
 
@@ -335,7 +503,6 @@ public class HomeFragment extends Fragment implements BluetoothService.OnBluetoo
     @Override
     public void onDataRead(byte[] buffer, int length) {
         Log.d(TAG, "onDataRead: " + new String(buffer, 0, length));
-//        mEdRead.append("< " + new String(buffer, 0, length) + "\n");
 
         try {
             JSONObject dataJson = new JSONObject(new String(buffer, 0, length));
@@ -365,7 +532,8 @@ public class HomeFragment extends Fragment implements BluetoothService.OnBluetoo
                 iPH++;
 
                 if(allowSaveReadings) {
-                    AtlasApp.dbHandler.addReading(String.valueOf(LATITUDE), String.valueOf(LONGITUDE), "PH", dataJson.getString("PH"), new Date());
+                    AtlasApp.dbHandler.addReading(String.valueOf(LATITUDE), String.valueOf(LONGITUDE),
+                            "PH", dataJson.getString("PH"), new Date(),SoilOrWater,address,SoilType,CropType);
                 }
             }else{
 
@@ -390,7 +558,8 @@ public class HomeFragment extends Fragment implements BluetoothService.OnBluetoo
                 chartEs.moveViewTo(data.getEntryCount() - 7, 50f, YAxis.AxisDependency.LEFT);
                 iEs++;
                 if(allowSaveReadings) {
-                    AtlasApp.dbHandler.addReading(String.valueOf(LATITUDE), String.valueOf(LONGITUDE), "EC", dataJson.getString("EC"), new Date());
+                    AtlasApp.dbHandler.addReading(String.valueOf(LATITUDE), String.valueOf(LONGITUDE), "EC"
+                            , dataJson.getString("EC"), new Date(),SoilOrWater,address,SoilType,CropType);
                 }
             }
         } catch (JSONException e) {

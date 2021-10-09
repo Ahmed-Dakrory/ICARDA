@@ -87,4 +87,88 @@
         <item >Select App Language</item>
         <item >برجاء اختيار لغة التطبيق</item>
     </string-array>
+
+
+
+    <string-array name="cropType">
+        <item >1</item>
+        <item >2</item>
+        <item >3</item>
+    </string-array>
+
+
+    <string-array name="soilType">
+        <item >1</item>
+        <item >2</item>
+        <item >3</item>
+    </string-array>
+
+
+
+    <string-array name="Type">
+        <item >Soil</item>
+        <item >Water</item>
+    </string-array>
+
+
+
+    <string-array name="adjustedIrregation">
+        <item >Adjusted Irregation</item>
+        <item >قيمة الرى المعدل</item>
+    </string-array>
+
+
+
+
+
+    <string-array name="cropTypeViewDialog">
+        <item >Crop Type</item>
+        <item >نوع المحصول</item>
+    </string-array>
+
+
+
+
+    <string-array name="soilTypeViewDialog">
+        <item >Soil Type</item>
+        <item >نوع التربة</item>
+    </string-array>
+
+
+
+
+    <string-array name="SettheParameters">
+        <item >Set the Parameters</item>
+        <item >قم بوضع البيانات</item>
+    </string-array>
+
+
+
+    <string-array name="Cancel">
+        <item >Cancel</item>
+        <item >الغاء</item>
+    </string-array>
+
+    <string-array name="AllDetails">
+        <item >All Details</item>
+        <item >كل البيانات</item>
+    </string-array>
+
+
+
+    <string-array name="TypeView">
+        <item >Type</item>
+        <item >النوع</item>
+    </string-array>
+
+
+    <string-array name="Lat">
+        <item >Latitude</item>
+        <item >خط العرض</item>
+    </string-array>
+
+    <string-array name="longitude">
+        <item >Longitude</item>
+        <item >خط الطول</item>
+    </string-array>
 </resources>

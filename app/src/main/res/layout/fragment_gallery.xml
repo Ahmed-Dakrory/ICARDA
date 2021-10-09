@@ -45,4 +45,24 @@
 
 
     </LinearLayout>
+
+
+    <com.alespero.expandablecardview.ExpandableCardView
+        android:layout_marginTop="35dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
+        app:animationDuration="300"
+        app:expandOnClick="true"
+        android:layout_margin="15dp"
+        android:id="@+id/expandedDetails"
+        app:icon="@drawable/ic_menu_share"
+        app:inner_view="@layout/alldetails_for_show"
+        app:startExpanded="false"
+        android:background="#fff"
+        app:title="All Details">
+
+
+
+    </com.alespero.expandablecardview.ExpandableCardView>
 </LinearLayout>

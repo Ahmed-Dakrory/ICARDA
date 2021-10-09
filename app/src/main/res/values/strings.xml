@@ -22,6 +22,22 @@
     <string name="exit">Exit</string>
     <string name="Settings">Settings</string>
     <string name="ManageReadings">Manage Readings</string>
+    <string name="Latitude">Latitude</string>
+    <string name="Longitude">Longitude</string>
+    <string name="CropType">Crop Type</string>
+    <string name="SoilType">Soil Type</string>
+    <string name="Sitename">Site Name</string>
+    <string name="SoilOrWater">Soil or Water</string>
+    <string name="AdjustedIrregation">Adjusted Irregation</string>
+    <string name="siteAddress">Address</string>
+    <string name="Type">Type</string>
+    <string name="Ph_Soil">PH (Soil)</string>
+    <string name="Ph_water">Ph (Water)</string>
+    <string name="EC_Soil">EC (Soil)</string>
+    <string name="EC_water">EC (Water)</string>
+    <string name="LF">LF</string>
+    <string name="CEC">CEC</string>
+    <string name="I_Adjusted">I Adjusted Irregation</string>
 
 
 </resources>

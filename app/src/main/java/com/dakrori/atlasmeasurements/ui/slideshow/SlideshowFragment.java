@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -19,7 +20,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.alespero.expandablecardview.ExpandableCardView;
 import com.dakrori.atlasmeasurements.AtlasApp;
+import com.dakrori.atlasmeasurements.Helpers.DBHandler;
 import com.dakrori.atlasmeasurements.Helpers.ReadingObject;
 import com.dakrori.atlasmeasurements.R;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -50,8 +53,29 @@ public class SlideshowFragment extends Fragment {
     Button exportButton;
     Button startDateButton;
     Button endDateButton;
+    Button showResultsButton;
     String startDate ="";
     String EndDate = "";
+
+
+    TextView Ph_SOIL_VIEW;
+    TextView EC_SOIL_VIEW;
+    TextView Ph_WATER_VIEW;
+    TextView EC_WATER_VIEW;
+    TextView LF_VIEW;
+    TextView CEC_VIEW;
+    TextView ADJUSTED_I_VIEW;
+
+
+
+
+    TextView AdjustedIrregationViewHead;
+    EditText AdjustedIrregationEdit;
+
+    ExpandableCardView expandedDetails;
+
+
+    public float irregation = (float) 1.0;
 
     public com.dakrori.atlasmeasurements.AtlasApp AtlasApp;
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -61,6 +85,34 @@ public class SlideshowFragment extends Fragment {
         startDateButton = root.findViewById(R.id.startDate);
         endDateButton = root.findViewById(R.id.EndDate);
 
+        showResultsButton = root.findViewById(R.id.showData);
+
+
+        expandedDetails = root.findViewById(R.id.expandedDetails);
+
+
+
+        AdjustedIrregationViewHead = root.findViewById(R.id.AdjustedIrregationViewHead);
+        AdjustedIrregationEdit = root.findViewById(R.id.AdjustedIrregationView);
+
+
+
+
+        Ph_SOIL_VIEW = root.findViewById(R.id.Ph_soil_value);
+        EC_SOIL_VIEW = root.findViewById(R.id.EC_soil_value);
+        Ph_WATER_VIEW = root.findViewById(R.id.Ph_water_value);
+        EC_WATER_VIEW = root.findViewById(R.id.EC_water_value);
+        LF_VIEW = root.findViewById(R.id.LF_value);
+        CEC_VIEW = root.findViewById(R.id.CEC_value);
+        ADJUSTED_I_VIEW = root.findViewById(R.id.I_Adjusted_value);
+
+
+        showResultsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getResultsForSpecificElement();
+            }
+        });
 
         startDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,6 +206,47 @@ public class SlideshowFragment extends Fragment {
         return root;
     }
 
+    private void getResultsForSpecificElement() {
+        if(!startDate.equals("") && !EndDate.equals("") ) {
+            float Ph_Water = AtlasApp.dbHandler.getReadings_of_TYPE_and_WATERORSOIL(startDate, EndDate,"PH","Water");
+            float Ph_Soil = AtlasApp.dbHandler.getReadings_of_TYPE_and_WATERORSOIL(startDate, EndDate,"PH","Soil");
+            float EC_Water = AtlasApp.dbHandler.getReadings_of_TYPE_and_WATERORSOIL(startDate, EndDate,"EC","Water");
+            float EC_Soil = AtlasApp.dbHandler.getReadings_of_TYPE_and_WATERORSOIL(startDate, EndDate,"EC","Soil");
+
+
+            float I_Now = Float.parseFloat(AdjustedIrregationEdit.getText().toString());
+
+            Ph_SOIL_VIEW.setText(String.valueOf(Ph_Soil));
+            EC_SOIL_VIEW.setText(String.valueOf(EC_Soil));
+            Ph_WATER_VIEW.setText(String.valueOf(Ph_Water));
+            EC_WATER_VIEW.setText(String.valueOf(EC_Water));
+            float LF = 0;
+            try{
+                LF = EC_Water/(5*(EC_Soil-EC_Water));
+            }catch (Exception err){
+
+            }
+
+
+            LF_VIEW.setText(String.valueOf(LF));
+
+            CEC_VIEW.setText(String.valueOf(1));
+            float I_NEW = 0;
+            try{
+                I_NEW = I_Now/(I_Now - LF);
+            }catch (Exception err){
+
+            }
+            ADJUSTED_I_VIEW.setText(String.valueOf(I_NEW));
+
+
+        }else{
+
+            Toast.makeText(AtlasApp,"Please Select DateTime Start and End",Toast.LENGTH_LONG).show();
+        }
+
+    }
+
 
     public void export(String DateStart,String DateEnd) {
         File sd = Environment.getExternalStorageDirectory();
@@ -184,6 +277,7 @@ public class SlideshowFragment extends Fragment {
             sheetA.addCell(new Label(3, 0, "TYPE"));
             sheetA.addCell(new Label(4, 0, "VALUE"));
             sheetA.addCell(new Label(5, 0, "DATETIME"));
+            sheetA.addCell(new Label(5, 0, "ADDRESS"));
 
 
             allData = AtlasApp.dbHandler.getReadings(DateStart,DateEnd);
@@ -196,6 +290,7 @@ public class SlideshowFragment extends Fragment {
                 sheetA.addCell(new Label(3, i+1, allData.get(i).getType()));
                 sheetA.addCell(new Label(4, i+1, allData.get(i).getValue()));
                 sheetA.addCell(new Label(5, i+1, allData.get(i).getDatetimeNow()));
+                sheetA.addCell(new Label(5, i+1, allData.get(i).getAddress()));
 
 
             }
@@ -239,7 +334,9 @@ public class SlideshowFragment extends Fragment {
 
 
         exportButton.setText(getActivity().getResources().getStringArray(R.array.Export)[AtlasApp.language]);
+        AdjustedIrregationViewHead.setText(getActivity().getResources().getStringArray(R.array.adjustedIrregation)[AtlasApp.language]);
 
+        expandedDetails.setTitle(getActivity().getResources().getStringArray(R.array.AllDetails)[AtlasApp.language]);
         AtlasApp.toolbar.setTitle(getActivity().getResources().getStringArray(R.array.ManageReadings)[AtlasApp.language]);
         startDateButton.setText(getActivity().getResources().getStringArray(R.array.StartDate)[AtlasApp.language]);
         endDateButton.setText(getActivity().getResources().getStringArray(R.array.endDate)[AtlasApp.language]);
