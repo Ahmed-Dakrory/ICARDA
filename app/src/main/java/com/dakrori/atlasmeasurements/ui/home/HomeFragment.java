@@ -111,8 +111,8 @@ public class HomeFragment extends Fragment implements BluetoothService.OnBluetoo
     int iEs = 0;
 
 
-    double LATITUDE = 0;
-    double LONGITUDE = 0;
+    public static double LATITUDE = 0;
+    public static double LONGITUDE = 0;
 
     LocationManager locationManager;
     LocationListener locationListener;

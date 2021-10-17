@@ -21,10 +21,17 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.alespero.expandablecardview.ExpandableCardView;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.dakrori.atlasmeasurements.AtlasApp;
 import com.dakrori.atlasmeasurements.Helpers.DBHandler;
 import com.dakrori.atlasmeasurements.Helpers.ReadingObject;
 import com.dakrori.atlasmeasurements.R;
+import com.dakrori.atlasmeasurements.ui.home.HomeFragment;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
@@ -35,6 +42,9 @@ import java.util.List;
 
 import android.os.Environment;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.Locale;
@@ -74,7 +84,7 @@ public class SlideshowFragment extends Fragment {
 
     ExpandableCardView expandedDetails;
 
-
+    private RequestQueue queue;
     public float irregation = (float) 1.0;
 
     public com.dakrori.atlasmeasurements.AtlasApp AtlasApp;
@@ -107,6 +117,7 @@ public class SlideshowFragment extends Fragment {
         ADJUSTED_I_VIEW = root.findViewById(R.id.I_Adjusted_value);
 
 
+        queue = Volley.newRequestQueue(getActivity());
         showResultsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -216,30 +227,62 @@ public class SlideshowFragment extends Fragment {
 
             float I_Now = Float.parseFloat(AdjustedIrregationEdit.getText().toString());
 
-            Ph_SOIL_VIEW.setText(String.valueOf(Ph_Soil));
-            EC_SOIL_VIEW.setText(String.valueOf(EC_Soil));
-            Ph_WATER_VIEW.setText(String.valueOf(Ph_Water));
-            EC_WATER_VIEW.setText(String.valueOf(EC_Water));
-            float LF = 0;
-            try{
-                LF = EC_Water/(5*(EC_Soil-EC_Water));
-            }catch (Exception err){
 
-            }
+            String url = "https://rest.isric.org/soilgrids/v2.0/properties/query?lon="+String.valueOf(HomeFragment.LONGITUDE)+"&lat="+String.valueOf(HomeFragment.LATITUDE)+"&property=bdod&depth=0-5cm&value=mean";
+            StringRequest nStringReq = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
 
-
-            LF_VIEW.setText(String.valueOf(LF));
-
-            CEC_VIEW.setText(String.valueOf(1));
-            float I_NEW = 0;
-            try{
-                I_NEW = I_Now/(I_Now - LF);
-            }catch (Exception err){
-
-            }
-            ADJUSTED_I_VIEW.setText(String.valueOf(I_NEW));
+                    Log.v("AhmedNeee",response);
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
 
 
+                        Ph_SOIL_VIEW.setText(String.valueOf(Ph_Soil));
+                        EC_SOIL_VIEW.setText(String.valueOf(EC_Soil));
+                        Ph_WATER_VIEW.setText(String.valueOf(Ph_Water));
+                        EC_WATER_VIEW.setText(String.valueOf(EC_Water));
+                        float LF = 0;
+                        try{
+                            LF = EC_Water/(5*(EC_Soil-EC_Water));
+                        }catch (Exception err){
+
+                        }
+
+
+                        LF_VIEW.setText(String.valueOf(LF));
+
+
+
+                        CEC_VIEW.setText(String.valueOf(jsonObject.getJSONObject("properties").getJSONArray("layers").getJSONObject(0).getJSONArray("depths").getJSONObject(0).getJSONObject("values").getLong("mean")));
+                        float I_NEW = 0;
+                        try{
+                            I_NEW = I_Now/(I_Now - LF);
+                        }catch (Exception err){
+
+                        }
+                        ADJUSTED_I_VIEW.setText(String.valueOf(I_NEW));
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Toast.makeText(AtlasApp,"Error: Cannot Excute this action ",Toast.LENGTH_LONG).show();
+
+                    }
+
+                }
+
+
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(AtlasApp,error.toString(),Toast.LENGTH_LONG).show();
+
+                }
+            });
+
+
+            queue.add(nStringReq);
         }else{
 
             Toast.makeText(AtlasApp,"Please Select DateTime Start and End",Toast.LENGTH_LONG).show();
