@@ -64,6 +64,7 @@ public class SlideshowFragment extends Fragment {
     Button startDateButton;
     Button endDateButton;
     Button showResultsButton;
+    Button exportResultsButton;
     String startDate ="";
     String EndDate = "";
 
@@ -96,6 +97,7 @@ public class SlideshowFragment extends Fragment {
         endDateButton = root.findViewById(R.id.EndDate);
 
         showResultsButton = root.findViewById(R.id.showData);
+        exportResultsButton = root.findViewById(R.id.showData2);
 
 
         expandedDetails = root.findViewById(R.id.expandedDetails);
@@ -125,6 +127,13 @@ public class SlideshowFragment extends Fragment {
             }
         });
 
+
+        exportResultsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getResultsForSpecificElement2();
+            }
+        });
         startDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -291,6 +300,158 @@ public class SlideshowFragment extends Fragment {
     }
 
 
+    private void getResultsForSpecificElement2() {
+        if(!startDate.equals("") && !EndDate.equals("") ) {
+            float Ph_Water = AtlasApp.dbHandler.getReadings_of_TYPE_and_WATERORSOIL(startDate, EndDate,"PH","Water");
+            float Ph_Soil = AtlasApp.dbHandler.getReadings_of_TYPE_and_WATERORSOIL(startDate, EndDate,"PH","Soil");
+            float EC_Water = AtlasApp.dbHandler.getReadings_of_TYPE_and_WATERORSOIL(startDate, EndDate,"EC","Water");
+            float EC_Soil = AtlasApp.dbHandler.getReadings_of_TYPE_and_WATERORSOIL(startDate, EndDate,"EC","Soil");
+
+
+            float I_Now = Float.parseFloat(AdjustedIrregationEdit.getText().toString());
+
+
+            String url = "https://rest.isric.org/soilgrids/v2.0/properties/query?lon="+String.valueOf(HomeFragment.LONGITUDE)+"&lat="+String.valueOf(HomeFragment.LATITUDE)+"&property=bdod&depth=0-5cm&value=mean";
+            StringRequest nStringReq = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    Log.v("AhmedNeee",response);
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+
+
+                        Ph_SOIL_VIEW.setText(String.valueOf(Ph_Soil));
+                        EC_SOIL_VIEW.setText(String.valueOf(EC_Soil));
+                        Ph_WATER_VIEW.setText(String.valueOf(Ph_Water));
+                        EC_WATER_VIEW.setText(String.valueOf(EC_Water));
+                        float LF = 0;
+                        try{
+                            LF = EC_Water/(5*(EC_Soil-EC_Water));
+                        }catch (Exception err){
+
+                        }
+
+
+                        LF_VIEW.setText(String.valueOf(LF));
+
+
+
+                        CEC_VIEW.setText(String.valueOf(jsonObject.getJSONObject("properties").getJSONArray("layers").getJSONObject(0).getJSONArray("depths").getJSONObject(0).getJSONObject("values").getLong("mean")));
+                        float I_NEW = 0;
+                        try{
+                            I_NEW = I_Now/(I_Now - LF);
+                        }catch (Exception err){
+
+                        }
+                        ADJUSTED_I_VIEW.setText(String.valueOf(I_NEW));
+
+
+                        exportToFile(String.valueOf(Ph_Soil),String.valueOf(Ph_Water),String.valueOf(EC_Soil),
+                                String.valueOf(EC_Water),String.valueOf(LF),String.valueOf(jsonObject.getJSONObject("properties").getJSONArray("layers").getJSONObject(0).getJSONArray("depths").getJSONObject(0).getJSONObject("values").getLong("mean")),
+                                String.valueOf(I_NEW));
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Toast.makeText(AtlasApp,"Error: Cannot Excute this action ",Toast.LENGTH_LONG).show();
+
+                    }
+
+                }
+
+
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(AtlasApp,error.toString(),Toast.LENGTH_LONG).show();
+
+                }
+            });
+
+
+            queue.add(nStringReq);
+        }else{
+
+            Toast.makeText(AtlasApp,"Please Select DateTime Start and End",Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    private void exportToFile(String valueOf, String valueOf1, String valueOf2, String valueOf3, String valueOf4, String valueOf5, String valueOf6) {
+
+        File sd = Environment.getExternalStorageDirectory();
+        String csvFile = "newFile.xls";
+
+        File directory = new File(sd.getAbsolutePath());
+
+        //create directory if not exist
+        if (!directory.isDirectory()) {
+            directory.mkdirs();
+        }
+        try {
+
+            //file path
+            File file = new File(directory, csvFile);
+            WorkbookSettings wbSettings = new WorkbookSettings();
+            wbSettings.setLocale(new Locale(Locale.GERMAN.getLanguage(), Locale.GERMAN.getCountry()));
+            WritableWorkbook workbook;
+            workbook = Workbook.createWorkbook(file, wbSettings);
+
+            //Excel sheetA first sheetA
+            WritableSheet sheetA = workbook.createSheet("sheet A", 0);
+
+            // column and row titles
+            sheetA.addCell(new Label(0, 0, "PH (Soil)"));
+            sheetA.addCell(new Label(1, 0, "PH (Water)"));
+            sheetA.addCell(new Label(2, 0, "EC (Soil)"));
+            sheetA.addCell(new Label(3, 0, "EC (Water)"));
+            sheetA.addCell(new Label(4, 0, "LF"));
+            sheetA.addCell(new Label(5, 0, "CEC"));
+            sheetA.addCell(new Label(6, 0, "I Adjusted"));
+
+
+
+                // column and row titles
+            sheetA.addCell(new Label(0, 1, valueOf));
+            sheetA.addCell(new Label(1, 1, valueOf1));
+            sheetA.addCell(new Label(2, 1, valueOf2));
+            sheetA.addCell(new Label(3, 1, valueOf3));
+            sheetA.addCell(new Label(4, 1, valueOf4));
+            sheetA.addCell(new Label(5, 1, valueOf5));
+            sheetA.addCell(new Label(6, 1, valueOf6));
+
+
+
+
+
+            // close workbook
+            workbook.write();
+            workbook.close();
+
+            Toast.makeText(AtlasApp,"File Exported",Toast.LENGTH_LONG).show();
+
+//            Uri fileURL = FileProvider.getUriForFile(AtlasApp, AtlasApp.getApplicationContext().getPackageName() + ".provider",file);
+
+            if(Build.VERSION.SDK_INT>=24){
+                try{
+                    Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
+                    m.invoke(null);
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(Uri.fromFile(file),"application/vnd.ms-excel");
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
     public void export(String DateStart,String DateEnd) {
         File sd = Environment.getExternalStorageDirectory();
         String csvFile = "newFile.xls";
@@ -320,7 +481,8 @@ public class SlideshowFragment extends Fragment {
             sheetA.addCell(new Label(3, 0, "TYPE"));
             sheetA.addCell(new Label(4, 0, "VALUE"));
             sheetA.addCell(new Label(5, 0, "DATETIME"));
-            sheetA.addCell(new Label(5, 0, "ADDRESS"));
+            sheetA.addCell(new Label(6, 0, "ADDRESS"));
+            sheetA.addCell(new Label(7, 0, "SOIL_WATER"));
 
 
             allData = AtlasApp.dbHandler.getReadings(DateStart,DateEnd);
@@ -333,7 +495,8 @@ public class SlideshowFragment extends Fragment {
                 sheetA.addCell(new Label(3, i+1, allData.get(i).getType()));
                 sheetA.addCell(new Label(4, i+1, allData.get(i).getValue()));
                 sheetA.addCell(new Label(5, i+1, allData.get(i).getDatetimeNow()));
-                sheetA.addCell(new Label(5, i+1, allData.get(i).getAddress()));
+                sheetA.addCell(new Label(6, i+1, allData.get(i).getAddress()));
+                sheetA.addCell(new Label(7, i+1, allData.get(i).getWaterOrSoil()));
 
 
             }

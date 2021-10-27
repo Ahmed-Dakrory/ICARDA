@@ -154,12 +154,15 @@ public class DBHandler extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                return Float.parseFloat(cursor.getString(0));
-            } while (cursor.moveToNext());
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    return Float.parseFloat(cursor.getString(0));
+                } while (cursor.moveToNext());
+            }
+        }catch (Exception ex){
+            return 0;
         }
-
         // return contact list
         return 0;
 

@@ -46,7 +46,9 @@
 
     </LinearLayout>
 
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <com.alespero.expandablecardview.ExpandableCardView
         android:layout_marginTop="35dp"
         android:layout_width="match_parent"
@@ -65,4 +67,5 @@
 
 
     </com.alespero.expandablecardview.ExpandableCardView>
+</ScrollView>
 </LinearLayout>

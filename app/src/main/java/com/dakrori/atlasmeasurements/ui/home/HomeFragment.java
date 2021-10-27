@@ -98,9 +98,12 @@ public class HomeFragment extends Fragment implements BluetoothService.OnBluetoo
     private LineChart chartPh;
     private LineChart chartEs;
     Typeface tfRegular;
+    Typeface tfRegular2;
+
     ArrayList<Entry> values;
     LineData data;
     LineDataSet set1;
+
     ArrayList<Entry> valuesEs;
     LineData dataEs;
     LineDataSet set1Es;
@@ -166,6 +169,7 @@ public class HomeFragment extends Fragment implements BluetoothService.OnBluetoo
         chartEs = root.findViewById(R.id.chartes);
 
         tfRegular = Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Regular.ttf");
+        tfRegular2 = Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Regular.ttf");
 
         chartPh.getLegend().setEnabled(true);
         chartEs.getLegend().setEnabled(true);
@@ -204,12 +208,12 @@ public class HomeFragment extends Fragment implements BluetoothService.OnBluetoo
 
 
         YAxis ylEs = chartEs.getAxisLeft();
-        ylEs.setTypeface(tfRegular);
+        ylEs.setTypeface(tfRegular2);
 
 
         valuesEs = new ArrayList<>();
         valuesEs.add(new Entry(0, 0));
-        set1Es = new LineDataSet(values, "EC");
+        set1Es = new LineDataSet(valuesEs, "EC");
         set1Es.setLineWidth(3f);
         set1Es.setColor(Color.GREEN);
         set1Es.setCircleRadius(5f);
@@ -511,10 +515,10 @@ public class HomeFragment extends Fragment implements BluetoothService.OnBluetoo
                 displayPh.setText(dataJson.getString("PH"));
 
 
-                LineData data = chartPh.getData();
-                if (data == null) {
-                    data = new LineData();
-                    chartPh.setData(data);
+                LineData data1 = chartPh.getData();
+                if (data1 == null) {
+                    data1 = new LineData();
+                    chartPh.setData(data1);
                 }
 
 
@@ -522,20 +526,21 @@ public class HomeFragment extends Fragment implements BluetoothService.OnBluetoo
 
 
 
-                data.addEntry(new Entry(iPH, (float) Float.parseFloat(dataJson.getString("PH"))), 0);
+                data1.addEntry(new Entry(iPH, (float) Float.parseFloat(dataJson.getString("PH"))), 0);
 
-                data.notifyDataChanged();
+                data1.notifyDataChanged();
 
                 // let the chart know it's data has changed
                 chartPh.notifyDataSetChanged();
-                chartPh.moveViewTo(data.getEntryCount() - 7, 50f, YAxis.AxisDependency.LEFT);
+                chartPh.moveViewTo(data1.getEntryCount() - 7, 50f, YAxis.AxisDependency.LEFT);
                 iPH++;
 
                 if(allowSaveReadings) {
                     AtlasApp.dbHandler.addReading(String.valueOf(LATITUDE), String.valueOf(LONGITUDE),
                             "PH", dataJson.getString("PH"), new Date(),SoilOrWater,address,SoilType,CropType);
                 }
-            }else{
+            }
+            else{
 
                 displayES.setText(dataJson.getString("EC"));
                 LineData data = chartEs.getData();
@@ -562,7 +567,8 @@ public class HomeFragment extends Fragment implements BluetoothService.OnBluetoo
                             , dataJson.getString("EC"), new Date(),SoilOrWater,address,SoilType,CropType);
                 }
             }
-        } catch (JSONException e) {
+        }
+        catch (JSONException e) {
             e.printStackTrace();
         }
 
